@@ -126,8 +126,8 @@ const LoginPage: React.FC = () => {
           />
         </div>
 
-        <p className="text-center text-gray-600 text-sm mt-4 justify-between flex-col ">
-          Belum Punya Akun ?
+        <p className="text-center text-gray-600 text-sm font-semibold mt-4 justify-between flex-col ">
+           {isRegisterMode ? 'Sudah Punya Akun?' : 'Belum Punya Akun?'}
           <p onClick={toggleMode}
             // Tambahkan kelas Tailwind untuk efek hover pada tombol switch mode
             className="text-green-600 hover:text-green-800 font-bold ml-1
