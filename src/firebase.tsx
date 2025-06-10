@@ -10,7 +10,7 @@ const firebaseConfig = {
   authDomain: "fadilsweb.firebaseapp.com",
   projectId: "fadilsweb",
   storageBucket: "fadilsweb.firebasestorage.app",
-  messagingSenderId: "130358463561",
+  messagingSenderId: "13035846356",
   appId: "1:130358463561:web:0d743b405ad237bf530398",
   measurementId: "G-LLGPLPKS4M"
 };
