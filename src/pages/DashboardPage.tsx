@@ -14,10 +14,10 @@ const DashboardPage: React.FC = () => {
       </div>
 
       <div className="flex flex-wrap justify-center gap-6 px-6 pb-12">
-        <InfoCard title="Total Siswa" value={199} />
-        <InfoCard title="Pemasukan Bulan Ini" value="12.000.000" />
-        <InfoCard title="Pengeluaran Bulan Ini" value="10.000.000" />
-        <InfoCard title="Total Saldo" value="2.000.000" />
+        <InfoCard title="Total Siswa" value={199} link="/DataSiswa" />
+        <InfoCard title="Pemasukan Bulan Ini" value="12.000.000" link="/DataPemasukan" />
+        <InfoCard title="Pengeluaran Bulan Ini" value="10.000.000" link="/DataPengeluaran" />
+        <InfoCard title="Total Saldo" value="2.000.000" link="/TotalSaldo" />
       </div>
     </div>
   );
