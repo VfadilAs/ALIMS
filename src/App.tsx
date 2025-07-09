@@ -20,7 +20,7 @@ function App() {
      <Route path='/DataSiswa'element={<DataSiswaPage/>}/>
      <Route path='/DataPengeluaran'element={<DataPengeluaranPage/>}/>
      <Route path='/DataPemasukan'element={<DataPemasukanPage/>}/>
-     <Route path='TotalSaldo'element={<TotalSaldoPage/>}/></Routes>
+     <Route path='/TotalSaldo'element={<TotalSaldoPage/>}/></Routes>
     </>
   )
 }

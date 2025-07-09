@@ -109,7 +109,7 @@ const DataPengeluaranPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-green-900 p-8">
       <h1 className="text-3xl font-bold text-white mb-6">
-        DATA PENGELUARAN
+        INPUT DATA PENGELUARAN
       </h1>
 
       <form
@@ -117,7 +117,7 @@ const DataPengeluaranPage: React.FC = () => {
         className="bg-white p-6 rounded-lg mb-6 shadow-md"
       >
         <h2 className="text-2xl font-bold text-green-700 mb-4">
-          INPUT DATA PENGELUARAN
+          
         </h2>
         <div className="grid gap-4 text-black">
           <input
@@ -171,7 +171,7 @@ const DataPengeluaranPage: React.FC = () => {
         </div>
 
         <p className="text-sm text-center mt-4 text-gray-500">
-          Semua data wajib di isi
+          
         </p>
       </form>
 
