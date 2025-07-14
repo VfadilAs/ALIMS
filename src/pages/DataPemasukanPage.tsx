@@ -1,4 +1,4 @@
-// src/pages/DataPemasukanPage.tsx
+  // src/pages/DataPemasukanPage.tsx
 import React, { useState, useEffect } from "react";
 import {
   collection,
@@ -9,6 +9,7 @@ import {
   doc,
 } from "firebase/firestore";
 import { db } from "../firebase";
+import Navbar from "../component/Navbar";
 
 interface Pemasukan {
   id?: string;
@@ -109,21 +110,31 @@ const DataPemasukanPage: React.FC = () => {
   };
 
   const handleDelete = async (index: number) => {
-    const id = pemasukanList[index]?.id;
-    if (!id) return;
-    try {
-      await deleteDoc(doc(db, "pemasukan", id));
-      fetchData();
-    } catch (error) {
-      console.error("Gagal menghapus data:", error);
-    }
-  };
+  const pemasukan = pemasukanList[index];
+  const konfirmasi = window.confirm(`Apakah Anda yakin ingin menghapus data pemasukan tanggal "${pemasukan.tanggal}" dengan jumlah Rp ${pemasukan.jumlah.toLocaleString("id-ID")}?`);
+
+  if (!konfirmasi) return;
+
+  const id = pemasukan.id;
+  if (!id) return;
+
+  try {
+    await deleteDoc(doc(db, "pemasukan", id));
+    fetchData();
+  } catch (error) {
+    console.error("Gagal menghapus data:", error);
+  }
+};
+
 
   const isIuran = formData.sumber === "Iuran";
 
   return (
-    <div className="min-h-screen w-screen bg-green-900 p-8">
-      <h1 className="text-3xl font-bold text-white mb-6">
+    <>
+    <Navbar />
+    <div className="min-h-screen w-screen p-8 bg-green-900">
+       
+      <h1 className="text-3xl font-bold mt-5 text-white mb-6">
         INPUT DATA PEMASUKAN
       </h1>
 
@@ -236,7 +247,7 @@ const DataPemasukanPage: React.FC = () => {
         </div>
       </form>
 
-      <div className="overflow-x-auto bg-white shadow-md rounded-lg">
+      <div className="overflow-x-auto mt-20 bg-white shadow-md rounded-lg">
         <table className="w-full border-collapse border border-gray-200">
           <thead className="bg-green-600 text-white">
             <tr>
@@ -289,7 +300,7 @@ const DataPemasukanPage: React.FC = () => {
           </tbody>
         </table>
       </div>
-    </div>
+    </div></>
   );
 };
 

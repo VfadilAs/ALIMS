@@ -8,6 +8,8 @@ import {
   doc,
 } from "firebase/firestore";
 import { db } from "../firebase";
+import logo from '../assets/logo-al-islah.png';
+import Navbar from "../component/Navbar";
 
 interface Siswa {
   id?: string;
@@ -23,6 +25,7 @@ interface Siswa {
 const DataSiswaPage: React.FC = () => {
   const [siswaList, setSiswaList] = useState<Siswa[]>([]);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [filterKelas, setFilterKelas] = useState<string>("");
   const [formData, setFormData] = useState<Siswa>({
     nama: "",
     jenisKelamin: "",
@@ -86,18 +89,29 @@ const DataSiswaPage: React.FC = () => {
   };
 
   const handleDelete = async (index: number) => {
-    const id = siswaList[index].id;
-    if (!id) return;
-    await deleteDoc(doc(db, "siswa", id));
-    fetchData();
-  };
+  const siswa = siswaList[index];
+  const konfirmasi = window.confirm(`Apakah Anda yakin ingin menghapus data siswa "${siswa.nama}"?`);
+
+  if (!konfirmasi) return;
+
+  const id = siswa.id;
+  if (!id) return;
+  await deleteDoc(doc(db, "siswa", id));
+  fetchData();
+};
+
+  const filteredSiswa = filterKelas
+    ? siswaList.filter((s) => s.kelas === filterKelas)
+    : siswaList;
 
   return (
-    <div className="min-h-screen bg-green-900 justify-items-center w-screen p-8">
-      <h1 className="text-3xl font-bold text-white mb-6">Formulir Data Siswa</h1>
+    <>     <Navbar />
+    <div className="min-h-screen pb-20 w-screen ">
+ 
+      <h1 className="text-3xl font-bold text-white mb-6 mt-10 print:hidden">FORMULIR DATA SISWA</h1>
 
       {/* Formulir Input */}
-      <form onSubmit={handleFormSubmit} className="bg-white w-200 shadow-md rounded-lg p-6 mb-6">
+      <form onSubmit={handleFormSubmit} className="bg-white shadow-md mr-30 ml-30 mt-10 rounded-lg p-6 mb-6 print:hidden">
         <div className="grid grid-cols-1 text-black md:grid-cols-2 gap-4">
           <input name="nama" value={formData.nama} onChange={handleFormChange} placeholder="Nama Lengkap" className="border p-2 rounded" required />
           <select name="jenisKelamin" value={formData.jenisKelamin} onChange={handleFormChange} className="border p-2 rounded" required>
@@ -126,34 +140,62 @@ const DataSiswaPage: React.FC = () => {
         </div>
       </form>
 
+      {/* Filter + Cetak */}
+      <div className="flex gap-2 ml-30 items-center mb-4 print:hidden">
+        <select
+          value={filterKelas}
+          onChange={(e) => setFilterKelas(e.target.value)}
+          className="border p-2 bg-amber-50 text-black rounded"
+        >
+          <option value="">Semua Kelas</option>
+          <option value="Kelas A">Kelas A</option>
+          <option value="Kelas B">Kelas B</option>
+          <option value="Kelas C">Kelas C</option>
+        </select>
+        <button
+          onClick={() => window.print()}
+          className="px-4 py-2 bg-blue-600 text-white rounded"
+        >
+          Cetak Data
+        </button>
+      </div>
+
+      {/* Header Print */}
+      <div className="hidden print:block w-screen text-center mb-4 text-black">
+        <img src={logo} alt="Logo" className="h-30 mx-auto mb-2" />
+        <h2 className="text-xl font-bold">Laporan Data Siswa</h2>
+        {filterKelas && <p className="text-sm text-black">Kelas: {filterKelas}</p>}
+      </div>
+
       {/* Tabel Data */}
-      <div className="overflow-x-auto text-black bg-white shadow-md rounded-lg">
-        <table className="min-w-full text-sm text-left border border-gray-200">
-          <thead className="bg-green-600 text-white text-base">
+      <div className="flex flex-col items-center mt-6">
+      <div className=" text-black w-screen justify-center flex self-center bg-white shadow-md">
+        <table className=" text-sm w-screen text-center border border-black">
+          <thead className="bg-green-600  text-black text-base">
             <tr>
-              <th className="p-3 border">No</th>
-              <th className="p-3 border">Nama</th>
-              <th className="p-3 border">Jenis Kelamin</th>
-              <th className="p-3 border">Tanggal Lahir</th>
-              <th className="p-3 border">Kelas</th>
-              <th className="p-3 border">Alamat</th>
-              <th className="p-3 border">Orang Tua</th>
-              <th className="p-3 border">Kontak</th>
-              <th className="p-3 border">Aksi</th>
+              <th className="p-1 border">No</th>
+              <th className="p-1 border">Nama</th>
+              <th className="p-1 border">Jenis Kelamin</th>
+              <th className="p-1 border">Tanggal Lahir</th>
+              <th className="p-1 border">Kelas</th>
+              <th className="p-1 border">Alamat</th>
+              <th className="p-1 border">Orang Tua</th>
+              <th className="p-1 border">Kontak</th>
+              <th className="p-1 border print:hidden">Aksi</th>
             </tr>
           </thead>
           <tbody>
-            {siswaList.map((siswa, index) => (
+            {filteredSiswa.map((siswa, index) => (
               <tr key={index} className="hover:bg-green-50">
-                <td className="p-3 border text-center">{index + 1}</td>
-                <td className="p-3 border">{siswa.nama}</td>
-                <td className="p-3 border">{siswa.jenisKelamin}</td>
-                <td className="p-3 border">{siswa.tanggalLahir}</td>
-                <td className="p-3 border text-center">{siswa.kelas}</td>
-                <td className="p-3 border">{siswa.alamat}</td>
-                <td className="p-3 border">{siswa.orangTua}</td>
-                <td className="p-3 border">{siswa.kontak}</td>
-                <td className="p-3 border whitespace-nowrap">
+                <td className="p-1 border text-center">{index + 1}</td>
+                <td className="p-1 border text-left">{siswa.nama}</td>
+                <td className="p-1 border text-left">{siswa.jenisKelamin}</td>
+                <td className="p-1 border text-left">{siswa.tanggalLahir}</td>
+                <td className="p-1 border text-center">{siswa.kelas}</td>
+                <td className="p-1 border text-left">{siswa.alamat}</td>
+                <td className="p-1 border text-left">{siswa.orangTua}</td>
+                <td className="p-3 border text-left">{siswa.kontak}</td>
+                <td className="p-3 border whitespace-nowrap print:hidden">
                   <button onClick={() => handleEdit(index)} className="text-blue-600 underline mr-2">
                     Edit
                   </button>
@@ -165,8 +207,8 @@ const DataSiswaPage: React.FC = () => {
             ))}
           </tbody>
         </table>
-      </div>
-    </div>
+     </div> </div>
+    </div></>
   );
 };
 

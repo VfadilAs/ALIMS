@@ -9,6 +9,7 @@ import {
   doc,
 } from "firebase/firestore";
 import { db } from "../firebase";
+import Navbar from "../component/Navbar";
 
 interface Pengeluaran {
   id?: string;
@@ -95,28 +96,38 @@ const DataPengeluaranPage: React.FC = () => {
     });
   };
 
-  const handleDelete = async (index: number) => {
-    const id = pengeluaranList[index]?.id;
-    if (!id) return;
-    try {
-      await deleteDoc(doc(db, "pengeluaran", id));
-      fetchData();
-    } catch (error) {
-      console.error("Gagal menghapus data:", error);
-    }
-  };
+ const handleDelete = async (index: number) => {
+  const pengeluaran = pengeluaranList[index];
+  const konfirmasi = window.confirm(
+    `Apakah Anda yakin ingin menghapus data pengeluaran tanggal "${pengeluaran.tanggal}" sebesar Rp ${Number(pengeluaran.jumlah).toLocaleString("id-ID")} ?`
+  );
+
+  if (!konfirmasi) return;
+
+  const id = pengeluaran.id;
+  if (!id) return;
+
+  try {
+    await deleteDoc(doc(db, "pengeluaran", id));
+    fetchData();
+  } catch (error) {
+    console.error("Gagal menghapus data:", error);
+  }
+};
+
 
   return (
-    <div className="min-h-screen bg-green-900 p-8">
-      <h1 className="text-3xl font-bold text-white mb-6">
+    <> <Navbar />
+    <div className="min-h-screen flex flex-col justify-center w-screen bg-green-900 p-8">
+      <h1 className="text-3xl font-bold text-white mb-7">
         INPUT DATA PENGELUARAN
       </h1>
 
       <form
         onSubmit={handleFormSubmit}
-        className="bg-white p-6 rounded-lg mb-6 shadow-md"
+        className="bg-white justify-center w-full items-center p-6 rounded-lg mb-25 shadow-md"
       >
-        <h2 className="text-2xl font-bold text-green-700 mb-4">
+        <h2 className="text-2xl justify-center  font-bold text-green-700 mb-4">
           
         </h2>
         <div className="grid gap-4 text-black">
@@ -222,7 +233,7 @@ const DataPengeluaranPage: React.FC = () => {
           </tbody>
         </table>
       </div>
-    </div>
+    </div></>
   );
 };
 
