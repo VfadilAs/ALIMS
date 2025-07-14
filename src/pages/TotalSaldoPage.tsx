@@ -64,7 +64,7 @@ const TotalSaldoPage: React.FC = () => {
     <>
       <Navbar />
       <div className="min-h-screen w-screen bg-green-900 text-white p-6 print:bg-white">
-        <h1 className="text-3xl font-bold print:hidden  mb-6 print:text-black">SALDO SAAT INI</h1>
+        <h1 className="text-3xl font-bold print:hidden  mb-6 mt-10 print:text-black text-center">SALDO SAAT INI</h1>
 
         <div className="flex justify-end mb-4 no-print">
           <button
@@ -88,7 +88,7 @@ const TotalSaldoPage: React.FC = () => {
                   style={{ width: "100px", height: "100px" }} 
                 />
                 <h2 className="text-xl text-black font-bold">LAPORAN SALDO AL-ISHLAH</h2>
-                <p className="text-sm">Alamat: Jl. Contoh No.123, Kota</p>
+                <p className="text-sm">Jl. H. Jaili 03/01 Ciampea</p>
               </div>
 
               <table className="w-full text-sm border text-black border-gray-300 print:text-sm print:border-black">

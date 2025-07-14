@@ -118,16 +118,16 @@ const DataPengeluaranPage: React.FC = () => {
 
   return (
     <> <Navbar />
-    <div className="min-h-screen flex flex-col justify-center w-screen bg-green-900 p-8">
-      <h1 className="text-3xl font-bold text-white mb-7">
+    <div className="min-h-screen w-screen bg-green-900 p-8">
+      <h1 className="text-3xl font-bold text-white mb-6 text-center">
         INPUT DATA PENGELUARAN
       </h1>
 
       <form
-        onSubmit={handleFormSubmit}
-        className="bg-white justify-center w-full items-center p-6 rounded-lg mb-25 shadow-md"
-      >
-        <h2 className="text-2xl justify-center  font-bold text-green-700 mb-4">
+  onSubmit={handleFormSubmit}
+  className="bg-white w-full max-w-3xl mx-auto p-6 rounded-lg mb-10 shadow-md"
+>
+        <h2 className="text-2xl justify-center  font-bold text-green-700 mb-10">
           
         </h2>
         <div className="grid gap-4 text-black">
@@ -137,7 +137,7 @@ const DataPengeluaranPage: React.FC = () => {
             value={formData.tanggal}
             onChange={handleFormChange}
             required
-            className="border p-2 rounded"
+            className="border p-2 rounded [&::-webkit-calendar-picker-indicator]:invert"
           />
           <textarea
             name="keterangan"

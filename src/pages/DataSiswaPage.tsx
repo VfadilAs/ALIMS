@@ -106,9 +106,9 @@ const DataSiswaPage: React.FC = () => {
 
   return (
     <>     <Navbar />
-    <div className="min-h-screen pb-20 w-screen ">
+    <div className="min-h-screen pb-20 w-screen bg-green-900 p-8">
  
-      <h1 className="text-3xl font-bold text-white mb-6 mt-10 print:hidden">FORMULIR DATA SISWA</h1>
+      <h1 className="text-3xl font-bold text-white mb-6 mt-10 print:hidden text-center">FORMULIR DATA SISWA</h1>
 
       {/* Formulir Input */}
       <form onSubmit={handleFormSubmit} className="bg-white shadow-md mr-30 ml-30 mt-10 rounded-lg p-6 mb-6 print:hidden">
@@ -119,7 +119,7 @@ const DataSiswaPage: React.FC = () => {
             <option value="Laki-laki">Laki-laki</option>
             <option value="Perempuan">Perempuan</option>
           </select>
-          <input type="date" name="tanggalLahir" value={formData.tanggalLahir} onChange={handleFormChange} className="border p-2 rounded" required />
+          <input type="date" name="tanggalLahir" value={formData.tanggalLahir} onChange={handleFormChange} className="border p-2 rounded [&::-webkit-calendar-picker-indicator]:invert" required />
           <select name="kelas" value={formData.kelas} onChange={handleFormChange} className="border p-2 rounded" required>
             <option value="">Pilih Kelas</option>
             <option value="Kelas A">Kelas A</option>
@@ -169,8 +169,8 @@ const DataSiswaPage: React.FC = () => {
 
       {/* Tabel Data */}
       <div className="flex flex-col items-center mt-6">
-      <div className=" text-black w-screen justify-center flex self-center bg-white shadow-md">
-        <table className=" text-sm w-screen text-center border border-black">
+      <div className="text-black w-full max-w-9xl px-0 justify-center flex self-center bg-white shadow-md">
+  <table className="text-sm w-full text-center border border-black">
           <thead className="bg-green-600  text-black text-base">
             <tr>
               <th className="p-1 border">No</th>
