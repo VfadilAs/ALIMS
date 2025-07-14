@@ -91,7 +91,7 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen pl-140 bg-green-800 flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen w-screen bg-green-800 flex flex-col items-center justify-center p-4">
       {/* Logo Section */}
       <div className="mb-8">
         <img src={logo} alt="Logo" className="h-32 w-32 object-contain" />
