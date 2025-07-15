@@ -11,7 +11,7 @@ import {
   orderBy, // ✅ Tambahkan baris ini
 } from "firebase/firestore";
 import { db } from "../firebase";
-import Navbar from "../component/Navbar";
+
 
 interface Pemasukan {
   id?: string;
@@ -145,7 +145,7 @@ const DataPemasukanPage: React.FC = () => {
 
   return (
     <>
-      <Navbar />
+      
       <div className="min-h-screen w-screen p-8 bg-green-900">
         <h1 className="text-3xl font-bold mt-5 text-white mb-6 text-center">INPUT DATA PEMASUKAN</h1>
 

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
-import Navbar from '../component/Navbar';
 import InfoCard from '../component/InfoCard';
 
 const DashboardPage: React.FC = () => {
@@ -11,11 +10,9 @@ const DashboardPage: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      // Fetch total siswa
       const siswaSnapshot = await getDocs(collection(db, 'siswa'));
       setTotalSiswa(siswaSnapshot.size);
 
-      // Fetch total pemasukan
       const pemasukanSnapshot = await getDocs(collection(db, 'pemasukan'));
       let totalMasuk = 0;
       pemasukanSnapshot.forEach((doc) => {
@@ -24,7 +21,6 @@ const DashboardPage: React.FC = () => {
       });
       setPemasukan(totalMasuk);
 
-      // Fetch total pengeluaran
       const pengeluaranSnapshot = await getDocs(collection(db, 'pengeluaran'));
       let totalKeluar = 0;
       pengeluaranSnapshot.forEach((doc) => {
@@ -41,15 +37,14 @@ const DashboardPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-green-900 text-white w-screen">
-      <Navbar />
-      <div className="text-center py-10">
+      <div className="text-center py-6 md:py-20">
         <h1 className="text-4xl font-extrabold mb-2 underline decoration-blue-500">
           DASHBOARD ALIMS
         </h1>
         <p className="text-xl">AL-ISHLAH MANAGEMENT SYSTEM</p>
       </div>
 
-      <div className="flex flex-wrap justify-center gap-6 px-6 mt-30">
+      <div className="flex flex-wrap justify-center gap-6 px-6 mt-4 md:mt-12">
         <InfoCard title="Total Siswa" value={totalSiswa} link="/DataSiswa" />
         <InfoCard title="Pemasukan Bulan Ini" value={`Rp ${pemasukan.toLocaleString()}`} link="/DataPemasukan" />
         <InfoCard title="Pengeluaran Bulan Ini" value={`Rp ${pengeluaran.toLocaleString()}`} link="/DataPengeluaran" />

@@ -9,7 +9,7 @@ import {
   doc,
 } from "firebase/firestore";
 import { db } from "../firebase";
-import Navbar from "../component/Navbar";
+
 
 interface Pengeluaran {
   id?: string;
@@ -117,7 +117,7 @@ const DataPengeluaranPage: React.FC = () => {
 
 
   return (
-    <> <Navbar />
+    <> 
     <div className="min-h-screen w-screen bg-green-900 p-8">
       <h1 className="text-3xl font-bold text-white mb-6 text-center">
         INPUT DATA PENGELUARAN

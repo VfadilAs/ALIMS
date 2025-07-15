@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
-import Navbar from "../component/Navbar";
+
 import logo from '../assets/logo-al-islah.png';
 
 interface Transaksi {
@@ -62,11 +62,10 @@ const TotalSaldoPage: React.FC = () => {
 
   return (
     <>
-      <Navbar />
-      <div className="min-h-screen w-screen bg-green-900 text-white p-6 print:bg-white">
-        <h1 className="text-3xl font-bold print:hidden  mb-6 mt-10 print:text-black text-center">SALDO SAAT INI</h1>
+      <div className="min-h-screen w-screen bg-green-900 text-white p-6 print:bg-white print:text-black">
+        <h1 className="text-3xl font-bold print:hidden mb-6 mt-10 text-center">SALDO SAAT INI</h1>
 
-        <div className="flex justify-end mb-4 no-print">
+        <div className="flex justify-end mb-4 no-print z-10 relative pointer-events-auto">
           <button
             onClick={() => window.print()}
             className="bg-white text-black px-4 py-2 border rounded shadow hover:bg-gray-200"
@@ -85,7 +84,7 @@ const TotalSaldoPage: React.FC = () => {
                   src={logo}
                   alt="Logo"
                   className="mx-auto mb-2 print:mb-2"
-                  style={{ width: "100px", height: "100px" }} 
+                  style={{ width: "100px", height: "100px" }}
                 />
                 <h2 className="text-xl text-black font-bold">LAPORAN SALDO AL-ISHLAH</h2>
                 <p className="text-sm">Jl. H. Jaili 03/01 Ciampea</p>
@@ -142,16 +141,16 @@ const TotalSaldoPage: React.FC = () => {
             .no-print {
               display: none !important;
             }
-            .print\:text-black {
+            .print\\:text-black {
               color: black !important;
             }
-            .print\:bg-white {
+            .print\\:bg-white {
               background-color: white !important;
             }
-            .print\:shadow-none {
+            .print\\:shadow-none {
               box-shadow: none !important;
             }
-            .print\:p-0 {
+            .print\\:p-0 {
               padding: 0 !important;
             }
           }
