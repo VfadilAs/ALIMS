@@ -39,7 +39,16 @@ const Navbar: React.FC = () => {
       </div>
 
       {/* Menu items */}
-      <ul className={`flex-col md:flex md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-6 font-semibold pr-2 absolute md:static top-16 left-0 w-full md:w-auto bg-green-600 md:bg-transparent px-4 py-2 md:p-5 transition-all duration-300 ${isOpen ? 'block' : 'hidden'} md:block`}>
+      <ul
+  className={`flex-col md:flex md:flex-row md:items-center 
+    space-y-2 md:space-y-0 md:space-x-6 font-semibold 
+    pr-2 absolute md:static top-16 right-2 md:right-auto 
+    w-60 md:w-auto bg-green-600 md:bg-transparent 
+    px-4 py-2 md:p-5 transition-all duration-300 
+    rounded-md shadow-md z-40
+    ${isOpen ? 'flex' : 'hidden'} md:flex`}
+>
+
         <li><a href="/Dashboard" className="block hover:underline">Dashboard</a></li>
         <li><a href="/DataSiswa" className="block hover:underline">Siswa</a></li>
         <li><a href="/DataPemasukan" className="block hover:underline">Saldo Masuk</a></li>
