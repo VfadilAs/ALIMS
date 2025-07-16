@@ -11,6 +11,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 import logo from '../assets/logo-al-islah.png';
+import { serverTimestamp } from "firebase/firestore";
 
 interface Siswa {
   id?: string;
@@ -21,6 +22,7 @@ interface Siswa {
   alamat: string;
   orangTua: string;
   kontak: string;
+  createdAt?: any;
 }
 
 const DataSiswaPage: React.FC = () => {
@@ -42,14 +44,14 @@ const DataSiswaPage: React.FC = () => {
   }, []);
 
   const fetchData = async () => {
-    const q = query(collection(db, "siswa"), orderBy("nama"));
-    const snapshot = await getDocs(q);
-    const data = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...(doc.data() as Siswa),
-    }));
-    setSiswaList(data);
-  };
+  const q = query(collection(db, "siswa"), orderBy("createdAt", "asc")); // urutan lama ke baru
+  const snapshot = await getDocs(q);
+  const data = snapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...(doc.data() as Siswa),
+  }));
+  setSiswaList(data);
+};
 
   const resetForm = () => {
     setFormData({
@@ -69,20 +71,23 @@ const DataSiswaPage: React.FC = () => {
   };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const siswaCol = collection(db, "siswa");
+  e.preventDefault();
+  const siswaCol = collection(db, "siswa");
 
-    if (editingIndex === null) {
-      await addDoc(siswaCol, formData);
-    } else {
-      const id = siswaList[editingIndex].id;
-      if (!id) return;
-      await updateDoc(doc(db, "siswa", id), formData as any);
-    }
+  if (editingIndex === null) {
+    await addDoc(siswaCol, {
+      ...formData,
+      createdAt: serverTimestamp(), // ini untuk urutan waktu
+    });
+  } else {
+    const id = siswaList[editingIndex].id;
+    if (!id) return;
+    await updateDoc(doc(db, "siswa", id), formData as any);
+  }
 
-    resetForm();
-    fetchData();
-  };
+  resetForm();
+  fetchData();
+};
 
   const handleEdit = (index: number) => {
     setFormData(siswaList[index]);

@@ -69,7 +69,8 @@ const DataPemasukanPage: React.FC = () => {
   };
 
   const fetchSiswa = async () => {
-    const snapshot = await getDocs(collection(db, "siswa"));
+    const q = query(collection(db, "siswa"), orderBy("nama", "desc"));
+    const snapshot = await getDocs(q);
     const data = snapshot.docs.map((doc) => ({ id: doc.id, ...(doc.data() as Siswa) }));
     setSiswaList(data);
   };
@@ -107,6 +108,7 @@ const DataPemasukanPage: React.FC = () => {
     }
     resetForm();
     fetchData();
+    fetchSiswa();
   };
 
   const handleEdit = (index: number) => {
@@ -124,6 +126,7 @@ const DataPemasukanPage: React.FC = () => {
     if (!id) return;
     await deleteDoc(doc(db, "pemasukan", id));
     fetchData();
+    fetchSiswa();
   };
 
   const isIuran = formData.sumber === "Iuran";
@@ -239,9 +242,9 @@ const DataPemasukanPage: React.FC = () => {
               <tr>
                 <th className="p-3 border">Tanggal</th>
                 <th className="p-3 border">Jumlah</th>
+                <th className="p-3 border">Nama</th>
                 <th className="p-3 border">Keterangan</th>
                 <th className="p-3 border">Kelas</th>
-                <th className="p-3 border">Nama</th>
                 <th className="p-3 border">Aksi</th>
               </tr>
             </thead>
@@ -253,9 +256,9 @@ const DataPemasukanPage: React.FC = () => {
                   <tr key={idx} className="hover:bg-green-50">
                     <td className="p-3 border">{item.tanggal}</td>
                     <td className="p-3 border">{item.jumlah.toLocaleString("id-ID")}</td>
+                    <td className="p-3 border">{item.nama || "-"}</td>
                     <td className="p-3 border">{item.keterangan || "-"}</td>
                     <td className="p-3 border">{item.kelas || "-"}</td>
-                    <td className="p-3 border">{item.nama || "-"}</td>
                     <td className="p-3 border">
                       <button onClick={() => handleEdit(idx)} className="text-blue-600 underline mr-2">Edit</button>
                       <button onClick={() => handleDelete(idx)} className="text-red-600 underline">Hapus</button>

@@ -6,6 +6,8 @@ import {
   updateDoc,
   deleteDoc,
   doc,
+  query,
+  orderBy
 } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -30,17 +32,19 @@ const DataPengeluaranPage: React.FC = () => {
   }, []);
 
   const fetchData = async () => {
-    try {
-      const snapshot = await getDocs(collection(db, "pengeluaran"));
-      const data = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...(doc.data() as Pengeluaran),
-      }));
-      setPengeluaranList(data);
-    } catch (error) {
-      console.error("Gagal mengambil data pengeluaran:", error);
-    }
-  };
+  try {
+    const q = query(collection(db, "pengeluaran"), orderBy("tanggal", "desc")); // 🔥 ini penting
+    const snapshot = await getDocs(q);
+    const data = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...(doc.data() as Pengeluaran),
+    }));
+    setPengeluaranList(data);
+  } catch (error) {
+    console.error("Gagal mengambil data pengeluaran:", error);
+  }
+};
+
 
   const resetForm = () => {
     setFormData({
