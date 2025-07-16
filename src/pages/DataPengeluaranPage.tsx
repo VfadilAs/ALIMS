@@ -1,4 +1,3 @@
-// src/pages/DataPengeluaranPage.tsx
 import React, { useState, useEffect } from "react";
 import {
   collection,
@@ -10,13 +9,11 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 
-
 interface Pengeluaran {
   id?: string;
   tanggal: string;
   keterangan: string;
   jumlah: string;
-  admin: string;
 }
 
 const DataPengeluaranPage: React.FC = () => {
@@ -25,7 +22,6 @@ const DataPengeluaranPage: React.FC = () => {
     tanggal: "",
     keterangan: "",
     jumlah: "",
-    admin: "",
   });
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
@@ -51,7 +47,6 @@ const DataPengeluaranPage: React.FC = () => {
       tanggal: "",
       keterangan: "",
       jumlah: "",
-      admin: "",
     });
     setEditingIndex(null);
   };
@@ -92,29 +87,27 @@ const DataPengeluaranPage: React.FC = () => {
       tanggal: data.tanggal || "",
       keterangan: data.keterangan || "",
       jumlah: data.jumlah ||  "",
-      admin: data.admin || "",
     });
   };
 
- const handleDelete = async (index: number) => {
-  const pengeluaran = pengeluaranList[index];
-  const konfirmasi = window.confirm(
-    `Apakah Anda yakin ingin menghapus data pengeluaran tanggal "${pengeluaran.tanggal}" sebesar Rp ${Number(pengeluaran.jumlah).toLocaleString("id-ID")} ?`
-  );
+  const handleDelete = async (index: number) => {
+    const pengeluaran = pengeluaranList[index];
+    const konfirmasi = window.confirm(
+      `Apakah Anda yakin ingin menghapus data pengeluaran tanggal "${pengeluaran.tanggal}" sebesar Rp ${Number(pengeluaran.jumlah).toLocaleString("id-ID")}?`
+    );
 
-  if (!konfirmasi) return;
+    if (!konfirmasi) return;
 
-  const id = pengeluaran.id;
-  if (!id) return;
+    const id = pengeluaran.id;
+    if (!id) return;
 
-  try {
-    await deleteDoc(doc(db, "pengeluaran", id));
-    fetchData();
-  } catch (error) {
-    console.error("Gagal menghapus data:", error);
-  }
-};
-
+    try {
+      await deleteDoc(doc(db, "pengeluaran", id));
+      fetchData();
+    } catch (error) {
+      console.error("Gagal menghapus data:", error);
+    }
+  };
 
   return (
     <> 
@@ -124,12 +117,9 @@ const DataPengeluaranPage: React.FC = () => {
       </h1>
 
       <form
-  onSubmit={handleFormSubmit}
-  className="bg-white w-full max-w-3xl mx-auto p-6 rounded-lg mb-10 shadow-md"
->
-        <h2 className="text-2xl justify-center  font-bold text-green-700 mb-10">
-          
-        </h2>
+        onSubmit={handleFormSubmit}
+        className="bg-white w-full max-w-3xl mx-auto p-6 rounded-lg mb-10 shadow-md"
+      >
         <div className="grid gap-4 text-black">
           <input
             type="date"
@@ -139,14 +129,6 @@ const DataPengeluaranPage: React.FC = () => {
             required
             className="border p-2 rounded [&::-webkit-calendar-picker-indicator]:invert"
           />
-          <textarea
-            name="keterangan"
-            value={formData.keterangan}
-            onChange={handleFormChange}
-            placeholder="Masukan keterangan pengeluaran"
-            required
-            className="border p-2 rounded"
-          />
           <input
             name="jumlah"
             value={formData.jumlah}
@@ -155,11 +137,11 @@ const DataPengeluaranPage: React.FC = () => {
             required
             className="border p-2 rounded"
           />
-          <input
-            name="admin"
-            value={formData.admin}
+          <textarea
+            name="keterangan"
+            value={formData.keterangan}
             onChange={handleFormChange}
-            placeholder="Nama Admin"
+            placeholder="Masukan keterangan pengeluaran"
             required
             className="border p-2 rounded"
           />
@@ -180,10 +162,6 @@ const DataPengeluaranPage: React.FC = () => {
             {editingIndex === null ? "Simpan Data" : "Update Data"}
           </button>
         </div>
-
-        <p className="text-sm text-center mt-4 text-gray-500">
-          
-        </p>
       </form>
 
       <div className="overflow-x-auto bg-white shadow-md rounded-lg">
@@ -191,16 +169,15 @@ const DataPengeluaranPage: React.FC = () => {
           <thead className="bg-green-600 text-white text-base">
             <tr>
               <th className="p-3 border">Tanggal</th>
-              <th className="p-3 border">Keterangan</th>
               <th className="p-3 border">Jumlah Pengeluaran</th>
-              <th className="p-3 border">Admin</th>
+              <th className="p-3 border">Keterangan</th>
               <th className="p-3 border">Aksi</th>
             </tr>
           </thead>
           <tbody>
             {pengeluaranList.length === 0 ? (
               <tr>
-                <td colSpan={5} className="text-center p-4 text-gray-500">
+                <td colSpan={4} className="text-center p-4 text-gray-500">
                   Belum ada data pengeluaran.
                 </td>
               </tr>
@@ -208,11 +185,10 @@ const DataPengeluaranPage: React.FC = () => {
               pengeluaranList.map((item, index) => (
                 <tr key={index} className="hover:bg-green-50 text-black">
                   <td className="p-3 border">{item.tanggal}</td>
-                  <td className="p-3 border">{item.keterangan}</td>
                   <td className="p-3 border">
                     {item.jumlah ? Number(item.jumlah).toLocaleString("id-ID") : ""}
                   </td>
-                  <td className="p-3 border">{item.admin}</td>
+                  <td className="p-3 border">{item.keterangan}</td>
                   <td className="p-3 border">
                     <button
                       onClick={() => handleEdit(index)}
@@ -233,7 +209,8 @@ const DataPengeluaranPage: React.FC = () => {
           </tbody>
         </table>
       </div>
-    </div></>
+    </div>
+    </>
   );
 };
 

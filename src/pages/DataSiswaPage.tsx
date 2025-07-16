@@ -134,7 +134,6 @@ const DataSiswaPage: React.FC = () => {
       </form>
 
       <div className="flex flex-wrap sm:flex-row justify-end items-center gap-2 mb-4 print:hidden max-w-6xl mx-auto">
-
         <select
           value={filterKelas}
           onChange={(e) => setFilterKelas(e.target.value)}
