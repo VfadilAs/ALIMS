@@ -164,52 +164,55 @@ const DataSiswaPage: React.FC = () => {
       </div>
 
       <div className="flex flex-col items-center mt-6">
-        <div className="text-black w-full max-w-7xl px-0 justify-center flex self-center bg-white shadow-md rounded-xl overflow-x-auto">
-          <table className="text-sm w-full text-center border border-black">
-            <thead className="bg-green-600 text-black text-base">
-              <tr>
-                <th className="p-1 border">No</th>
-                <th className="p-1 border">Nama</th>
-                <th className="p-1 border">Jenis Kelamin</th>
-                <th className="p-1 border">Tanggal Lahir</th>
-                <th className="p-1 border">Kelas</th>
-                <th className="p-1 border">Alamat</th>
-                <th className="p-1 border">Orang Tua</th>
-                <th className="p-1 border">Kontak</th>
-                <th className="p-1 border print:hidden">Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredSiswa.length === 0 ? (
-                <tr>
-                  <td colSpan={9} className="p-4 text-center text-gray-500">Belum ada data siswa.</td>
-                </tr>
-              ) : (
-                filteredSiswa.map((siswa, index) => (
-                  <tr key={index} className="hover:bg-green-50">
-                    <td className="p-1 border text-center">{index + 1}</td>
-                    <td className="p-1 border text-left">{siswa.nama}</td>
-                    <td className="p-1 border text-left">{siswa.jenisKelamin}</td>
-                    <td className="p-1 border text-left">{siswa.tanggalLahir}</td>
-                    <td className="p-1 border text-center">{siswa.kelas}</td>
-                    <td className="p-1 border text-left">{siswa.alamat}</td>
-                    <td className="p-1 border text-left">{siswa.orangTua}</td>
-                    <td className="p-3 border text-left">{siswa.kontak}</td>
-                    <td className="p-3 border whitespace-nowrap print:hidden">
-                      <button onClick={() => handleEdit(index)} className="text-blue-600 underline mr-2 hover:text-blue-800">
-                        Edit
-                      </button>
-                      <button onClick={() => handleDelete(index)} className="text-red-600 underline hover:text-red-800">
-                        Hapus
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
+  <div className="text-black w-full max-w-7xl bg-white shadow-md rounded-xl overflow-x-auto">
+
+    <table className="min-w-[900px] md:min-w-full text-sm text-center border border-black">
+      <thead className="bg-green-600 text-black text-base">
+  <tr>
+    <th className="p-1 border rounded-tl-xl">No</th>
+    <th className="p-1 border">Nama</th>
+    <th className="p-1 border">Jenis Kelamin</th>
+    <th className="p-1 border">Tanggal Lahir</th>
+    <th className="p-1 border">Kelas</th>
+    <th className="p-1 border">Alamat</th>
+    <th className="p-1 border">Orang Tua</th>
+    <th className="p-1 border">Kontak</th>
+    <th className="p-1 border print:hidden rounded-tr-xl">Aksi</th>
+  </tr>
+</thead>
+
+      <tbody>
+        {filteredSiswa.length === 0 ? (
+          <tr>
+            <td colSpan={9} className="p-4 text-center text-gray-500">Belum ada data siswa.</td>
+          </tr>
+        ) : (
+          filteredSiswa.map((siswa, index) => (
+            <tr key={index} className="hover:bg-green-50">
+              <td className="p-1 border text-center">{index + 1}</td>
+              <td className="p-1 border text-left">{siswa.nama}</td>
+              <td className="p-1 border text-left">{siswa.jenisKelamin}</td>
+              <td className="p-1 border text-left">{siswa.tanggalLahir}</td>
+              <td className="p-1 border text-center">{siswa.kelas}</td>
+              <td className="p-1 border text-left">{siswa.alamat}</td>
+              <td className="p-1 border text-left">{siswa.orangTua}</td>
+              <td className="p-3 border text-left">{siswa.kontak}</td>
+              <td className="p-3 border whitespace-nowrap print:hidden">
+                <button onClick={() => handleEdit(index)} className="text-blue-600 underline mr-2 hover:text-blue-800">
+                  Edit
+                </button>
+                <button onClick={() => handleDelete(index)} className="text-red-600 underline hover:text-red-800">
+                  Hapus
+                </button>
+              </td>
+            </tr>
+          ))
+        )}
+      </tbody>
+    </table>
+  </div>
+</div>
+
     </div>
   );
 };
