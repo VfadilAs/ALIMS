@@ -46,8 +46,8 @@ const DashboardPage: React.FC = () => {
 
       <div className="flex flex-wrap justify-center gap-6 px-6 mt-4 md:mt-12">
         <InfoCard title="Total Siswa" value={totalSiswa} link="/DataSiswa" />
-        <InfoCard title="Pemasukan Bulan Ini" value={`Rp ${pemasukan.toLocaleString()}`} link="/DataPemasukan" />
-        <InfoCard title="Pengeluaran Bulan Ini" value={`Rp ${pengeluaran.toLocaleString()}`} link="/DataPengeluaran" />
+        <InfoCard title="Pemasukan" value={`Rp ${pemasukan.toLocaleString()}`} link="/DataPemasukan" />
+        <InfoCard title="Pengeluaran" value={`Rp ${pengeluaran.toLocaleString()}`} link="/DataPengeluaran" />
         <InfoCard title="Total Saldo" value={`Rp ${saldo.toLocaleString()}`} link="/TotalSaldo" />
       </div>
     </div>

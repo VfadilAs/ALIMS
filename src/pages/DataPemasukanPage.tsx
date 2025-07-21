@@ -239,34 +239,35 @@ const DataPemasukanPage: React.FC = () => {
         <div className="overflow-x-auto bg-white shadow-md rounded-lg text-black">
           <table className="w-full border-collapse border border-gray-200">
             <thead className="bg-green-600 text-white">
-              <tr>
-                <th className="p-3 border">Tanggal</th>
-                <th className="p-3 border">Jumlah</th>
-                <th className="p-3 border">Keterangan</th>
-                <th className="p-3 border">Nama</th>
-                <th className="p-3 border">Kelas</th>
-                <th className="p-3 border">Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              {pemasukanList.length === 0 ? (
-                <tr><td colSpan={6} className="p-4 text-center">Belum ada data pemasukan.</td></tr>
-              ) : (
-                pemasukanList.map((item, idx) => (
-                  <tr key={idx} className="hover:bg-green-50">
-                    <td className="p-3 border">{item.tanggal}</td>
-                    <td className="p-3 border">{item.jumlah.toLocaleString("id-ID")}</td>
-                    <td className="p-3 border">{item.keterangan || "-"}</td>
-                    <td className="p-3 border">{item.nama || "-"}</td>
-                    <td className="p-3 border">{item.kelas || "-"}</td>
-                    <td className="p-3 border">
-                      <button onClick={() => handleEdit(idx)} className="text-blue-600 underline mr-2">Edit</button>
-                      <button onClick={() => handleDelete(idx)} className="text-red-600 underline">Hapus</button>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
+  <tr>
+    <th className="p-3 border">Tanggal</th>
+    <th className="p-3 border">Jumlah</th>
+    <th className="p-3 border">Keterangan</th>
+    <th className="p-3 border">Nama</th>
+    <th className="p-3 border">Kelas</th>
+    <th className="p-3 border">Aksi</th>
+  </tr>
+</thead>
+<tbody>
+  {pemasukanList.length === 0 ? (
+    <tr><td colSpan={6} className="p-4 text-center">Belum ada data pemasukan.</td></tr>
+  ) : (
+    pemasukanList.map((item, idx) => (
+      <tr key={idx} className="hover:bg-green-50">
+        <td className="p-3 border">{item.tanggal}</td>
+        <td className="p-3 border">{item.jumlah.toLocaleString("id-ID")}</td>
+        <td className="p-3 border">{item.keterangan || "-"}</td>
+        <td className="p-3 border">{item.nama || "-"}</td>
+        <td className="p-3 border">{item.kelas || "-"}</td>
+        <td className="p-3 border">
+          <button onClick={() => handleEdit(idx)} className="text-blue-600 underline mr-2">Edit</button>
+          <button onClick={() => handleDelete(idx)} className="text-red-600 underline">Hapus</button>
+        </td>
+      </tr>
+    ))
+  )}
+</tbody>
+
           </table>
         </div>
       )}
