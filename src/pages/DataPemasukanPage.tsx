@@ -242,8 +242,8 @@ const DataPemasukanPage: React.FC = () => {
               <tr>
                 <th className="p-3 border">Tanggal</th>
                 <th className="p-3 border">Jumlah</th>
-                <th className="p-3 border">Nama</th>
                 <th className="p-3 border">Keterangan</th>
+                <th className="p-3 border">Nama</th>
                 <th className="p-3 border">Kelas</th>
                 <th className="p-3 border">Aksi</th>
               </tr>
@@ -256,8 +256,8 @@ const DataPemasukanPage: React.FC = () => {
                   <tr key={idx} className="hover:bg-green-50">
                     <td className="p-3 border">{item.tanggal}</td>
                     <td className="p-3 border">{item.jumlah.toLocaleString("id-ID")}</td>
-                    <td className="p-3 border">{item.nama || "-"}</td>
                     <td className="p-3 border">{item.keterangan || "-"}</td>
+                    <td className="p-3 border">{item.nama || "-"}</td>
                     <td className="p-3 border">{item.kelas || "-"}</td>
                     <td className="p-3 border">
                       <button onClick={() => handleEdit(idx)} className="text-blue-600 underline mr-2">Edit</button>

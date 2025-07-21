@@ -165,7 +165,6 @@ const DataSiswaPage: React.FC = () => {
 
       <div className="flex flex-col items-center mt-6">
   <div className="text-black w-full max-w-7xl bg-white shadow-md rounded-xl overflow-x-auto">
-
     <table className="min-w-[900px] md:min-w-full text-sm text-center border border-black">
       <thead className="bg-green-600 text-black text-base">
   <tr>
