@@ -1,13 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import logo from '../assets/logo-al-islah.png';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const adminStatus = localStorage.getItem('isAdmin');
+    setIsAdmin(adminStatus === 'true');
+  }, []);
 
   const handleLogoutClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault();
     const konfirmasi = window.confirm("Apakah Anda yakin ingin logout?");
     if (konfirmasi) {
+      localStorage.clear(); // logout bersih
       window.location.href = "/";
     }
   };
@@ -40,20 +47,22 @@ const Navbar: React.FC = () => {
 
       {/* Menu items */}
       <ul
-  className={`flex-col md:flex md:flex-row md:items-center 
-    space-y-2 md:space-y-0 md:space-x-6 font-semibold 
-    pr-2 absolute md:static top-16 right-2 md:right-auto 
-    w-60 md:w-auto bg-green-600 md:bg-transparent 
-    px-4 py-2 md:p-5 transition-all duration-300 
-    rounded-md shadow-md z-40
-    ${isOpen ? 'flex' : 'hidden'} md:flex`}
->
-
+        className={`flex-col md:flex md:flex-row md:items-center 
+        space-y-2 md:space-y-0 md:space-x-6 font-semibold 
+        pr-2 absolute md:static top-16 right-2 md:right-auto 
+        w-60 md:w-auto bg-green-600 md:bg-transparent 
+        px-4 py-2 md:p-5 transition-all duration-300 
+        rounded-md shadow-md z-40
+        ${isOpen ? 'flex' : 'hidden'} md:flex`}
+      >
         <li><a href="/Dashboard" className="block hover:underline">Dashboard</a></li>
         <li><a href="/DataSiswa" className="block hover:underline">Siswa</a></li>
         <li><a href="/DataPemasukan" className="block hover:underline">Saldo Masuk</a></li>
         <li><a href="/DataPengeluaran" className="block hover:underline">Saldo Keluar</a></li>
         <li><a href="/TotalSaldo" className="block hover:underline">Total Saldo</a></li>
+        {isAdmin && (
+          <li><a href="/Approval" className="block hover:underline">Approval</a></li>
+        )}
         <li><a href="/" onClick={handleLogoutClick} className="block hover:underline">Logout</a></li>
       </ul>
     </nav>

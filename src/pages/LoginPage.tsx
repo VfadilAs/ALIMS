@@ -4,12 +4,16 @@ import Button from '../component/Button';
 import AlertMessage from '../component/AlertMessage';
 import { useNavigate } from 'react-router-dom';
 
-import { auth } from '../firebase/FirebaseConfig.ts';
+import { auth } from '../firebase/FirebaseConfig';
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
 } from 'firebase/auth';
+
+import { doc, setDoc, getDoc } from "firebase/firestore";
+
+import { db } from '../firebase';
 
 import logo from '../assets/logo-al-islah.png';
 
@@ -25,44 +29,81 @@ const LoginPage: React.FC = () => {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
+    setErrorMessage('');
+    setSuccessMessage('');
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, username, password);
+      const user = userCredential.user;
+
+      // Ambil data user dari Firestore
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      const userData = userDoc.data();
+
+      if (userData?.approved === false) {
+  setErrorMessage('Akun Anda belum disetujui oleh admin.');
+  return;
+}
+
+// Simpan isAdmin ke localStorage
+localStorage.setItem('isAdmin', userData?.isAdmin ? 'true' : 'false');
+
+navigate('/Dashboard');
+
+      navigate('/Dashboard');
+    } catch (error: any) {
+      setErrorMessage('Login gagal: ' + error.message);
+    }
+  };
+
+  const handleRegister = async () => {
   setErrorMessage('');
   setSuccessMessage('');
+
+  if (username.length < 3) {
+    setErrorMessage('Email minimal 3 karakter.');
+    return;
+  }
+  if (password.length < 6) {
+    setErrorMessage('Password minimal 6 karakter.');
+    return;
+  }
+  if (password !== confirmPassword) {
+    setErrorMessage('Konfirmasi Password tidak cocok.');
+    return;
+  }
+
   try {
-    await signInWithEmailAndPassword(auth, username, password);
-    navigate('/Dashboard'); // ⬅️ Redirect ke dashboard
+    const userCredential = await createUserWithEmailAndPassword(auth, username, password);
+    const user = userCredential.user;
+
+    // 💡 Email & password khusus admin
+    const adminEmail = "fadil.affabani@gmail.com";
+    const adminPassword = "ishikawa14"; // kamu bisa ubah sesuai keinginan
+
+    // Jika cocok, langsung diapprove sebagai admin
+    const isAdmin = username === adminEmail && password === adminPassword;
+
+    await setDoc(doc(db, 'users', user.uid), {
+      email: user.email,
+      approved: isAdmin ? true : false,
+      isAdmin: isAdmin
+    });
+
+    setSuccessMessage(
+      isAdmin
+        ? 'Admin berhasil dibuat dan langsung aktif!'
+        : 'Registrasi berhasil! Menunggu persetujuan admin.'
+    );
+    setUsername('');
+    setPassword('');
+    setConfirmPassword('');
+    setIsRegisterMode(false);
   } catch (error: any) {
-    setErrorMessage('Login gagal: ' + error.message);
+    setErrorMessage('Registrasi gagal: ' + error.message);
   }
 };
 
-  const handleRegister = async () => {
-    setErrorMessage('');
-    setSuccessMessage('');
 
-    if (username.length < 3) {
-      setErrorMessage('Username minimal 3 karakter.');
-      return;
-    }
-    if (password.length < 6) {
-      setErrorMessage('Password minimal 6 karakter.');
-      return;
-    }
-    if (password !== confirmPassword) {
-      setErrorMessage('Konfirmasi Password tidak cocok.');
-      return;
-    }
-
-    try {
-      await createUserWithEmailAndPassword(auth, username, password);
-      setSuccessMessage('Registrasi berhasil! Silakan login.');
-      setUsername('');
-      setPassword('');
-      setConfirmPassword('');
-      setIsRegisterMode(false);
-    } catch (error: any) {
-      setErrorMessage('Registrasi gagal: ' + error.message);
-    }
-  };
 
   const handlePasswordReset = async () => {
     setErrorMessage('');
@@ -92,22 +133,18 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="min-h-screen w-screen bg-green-800 flex flex-col items-center justify-center p-4">
-      {/* Logo Section */}
       <div className="mb-8">
         <img src={logo} alt="Logo" className="h-32 w-32 object-contain" />
       </div>
 
-      {/* Title */}
       <h1 className="text-white text-5xl font-bold mb-2">ALIMS</h1>
       <p className="text-white md:text-2xl mb-12 text-sm">AL-ISHLAH MANAGEMENT SYSTEM</p>
 
-      {/* Card */}
       <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
         <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
           {isRegisterMode ? 'REGISTER TPQ' : showResetForm ? 'RESET PASSWORD' : 'LOGIN TPQ'}
         </h2>
 
-        {/* Alerts */}
         {errorMessage && (
           <div className="mb-4">
             <AlertMessage message={errorMessage} type="error" />
@@ -119,7 +156,6 @@ const LoginPage: React.FC = () => {
           </div>
         )}
 
-        {/* Reset Password Form */}
         {showResetForm ? (
           <>
             <Input
@@ -181,7 +217,6 @@ const LoginPage: React.FC = () => {
               />
             </div>
 
-            {/* Forgot Password */}
             {!isRegisterMode && (
               <p
                 onClick={() => {
@@ -195,7 +230,6 @@ const LoginPage: React.FC = () => {
               </p>
             )}
 
-            {/* Toggle Login/Register */}
             <p className="text-center text-gray-600 text-sm font-semibold mt-4">
               {isRegisterMode ? 'Sudah Punya Akun?' : 'Belum Punya Akun?'}
               <span
