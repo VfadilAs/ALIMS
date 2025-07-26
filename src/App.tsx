@@ -8,6 +8,7 @@ import TotalSaldoPage from './pages/TotalSaldoPage';
 import ApprovalPage from './pages/ApprovalPage'; // ✅ tambahkan import ini
 import Navbar from './component/Navbar';
 
+
 function App() {
   const location = useLocation();
 

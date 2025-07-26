@@ -12,7 +12,6 @@ import {
 } from 'firebase/auth';
 
 import { doc, setDoc, getDoc } from "firebase/firestore";
-
 import { db } from '../firebase';
 
 import logo from '../assets/logo-al-islah.png';
@@ -28,6 +27,7 @@ const LoginPage: React.FC = () => {
   const [resetEmail, setResetEmail] = useState<string>('');
   const navigate = useNavigate();
 
+  // LOGIN
   const handleLogin = async () => {
     setErrorMessage('');
     setSuccessMessage('');
@@ -37,17 +37,22 @@ const LoginPage: React.FC = () => {
 
       // Ambil data user dari Firestore
       const userDoc = await getDoc(doc(db, 'users', user.uid));
+
+      // Cek apakah data user ada
+      if (!userDoc.exists()) {
+        setErrorMessage('Akun Anda ditolak/dihapus oleh admin.');
+        return;
+      }
+
       const userData = userDoc.data();
 
       if (userData?.approved === false) {
-  setErrorMessage('Akun Anda belum disetujui oleh admin.');
-  return;
-}
+        setErrorMessage('Akun Anda belum disetujui oleh admin.');
+        return;
+      }
 
-// Simpan isAdmin ke localStorage
-localStorage.setItem('isAdmin', userData?.isAdmin ? 'true' : 'false');
-
-navigate('/Dashboard');
+      // Simpan status admin
+      localStorage.setItem('isAdmin', userData?.isAdmin ? 'true' : 'false');
 
       navigate('/Dashboard');
     } catch (error: any) {
@@ -55,56 +60,54 @@ navigate('/Dashboard');
     }
   };
 
+  // REGISTER
   const handleRegister = async () => {
-  setErrorMessage('');
-  setSuccessMessage('');
+    setErrorMessage('');
+    setSuccessMessage('');
 
-  if (username.length < 3) {
-    setErrorMessage('Email minimal 3 karakter.');
-    return;
-  }
-  if (password.length < 6) {
-    setErrorMessage('Password minimal 6 karakter.');
-    return;
-  }
-  if (password !== confirmPassword) {
-    setErrorMessage('Konfirmasi Password tidak cocok.');
-    return;
-  }
+    if (username.length < 3) {
+      setErrorMessage('Email minimal 3 karakter.');
+      return;
+    }
+    if (password.length < 6) {
+      setErrorMessage('Password minimal 6 karakter.');
+      return;
+    }
+    if (password !== confirmPassword) {
+      setErrorMessage('Konfirmasi Password tidak cocok.');
+      return;
+    }
 
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, username, password);
-    const user = userCredential.user;
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, username, password);
+      const user = userCredential.user;
 
-    // 💡 Email & password khusus admin
-    const adminEmail = "fadil.affabani@gmail.com";
-    const adminPassword = "ishikawa14"; // kamu bisa ubah sesuai keinginan
+      const adminEmail = "fadil.affabani@gmail.com";
+      const adminPassword = "ishikawa14"; 
 
-    // Jika cocok, langsung diapprove sebagai admin
-    const isAdmin = username === adminEmail && password === adminPassword;
+      const isAdmin = username === adminEmail && password === adminPassword;
 
-    await setDoc(doc(db, 'users', user.uid), {
-      email: user.email,
-      approved: isAdmin ? true : false,
-      isAdmin: isAdmin
-    });
+      await setDoc(doc(db, 'users', user.uid), {
+        email: user.email,
+        approved: isAdmin ? true : false,
+        isAdmin: isAdmin
+      });
 
-    setSuccessMessage(
-      isAdmin
-        ? 'Admin berhasil dibuat dan langsung aktif!'
-        : 'Registrasi berhasil! Menunggu persetujuan admin.'
-    );
-    setUsername('');
-    setPassword('');
-    setConfirmPassword('');
-    setIsRegisterMode(false);
-  } catch (error: any) {
-    setErrorMessage('Registrasi gagal: ' + error.message);
-  }
-};
+      setSuccessMessage(
+        isAdmin
+          ? 'Admin berhasil dibuat dan langsung aktif!'
+          : 'Registrasi berhasil! Menunggu persetujuan admin.'
+      );
+      setUsername('');
+      setPassword('');
+      setConfirmPassword('');
+      setIsRegisterMode(false);
+    } catch (error: any) {
+      setErrorMessage('Registrasi gagal: ' + error.message);
+    }
+  };
 
-
-
+  // RESET PASSWORD
   const handlePasswordReset = async () => {
     setErrorMessage('');
     setSuccessMessage('');
